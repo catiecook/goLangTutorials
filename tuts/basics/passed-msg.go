@@ -6,7 +6,7 @@ func ping(pings chan<- string, msg string) {
   pings <- msg
 }
 
-//this one only 
+//this one only
 func pong(pings <-chan string, pongs chan<- string) {
   msg := <-pings
   pongs := <-msg

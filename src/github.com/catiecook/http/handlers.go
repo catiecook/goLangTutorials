@@ -2,17 +2,26 @@ package main
 
 import (
 	"encoding/json"
-	"fmt"
 	"io"
 	"io/ioutil"
 	"net/http"
 	"strconv"
+	"html/template"
 
 	"github.com/gorilla/mux"
 )
 
+
 func Index(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprint(w, "Welcome!\n")
+	// fmt.Fprint(w, "Welcome!\n")
+	t, _ := template.ParseFiles("../views/index.html", "../views/nav.html", "../views/header.html", "../views/form.html" )
+	err := t.ExecuteTemplate(w, "index", nil)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+	// user := GetUser()
+	// t.Execute(w, user)
 }
 
 func TodoIndex(w http.ResponseWriter, r *http.Request) {
@@ -46,7 +55,6 @@ func TodoShow(w http.ResponseWriter, r *http.Request) {
 	if err := json.NewEncoder(w).Encode(jsonErr{Code: http.StatusNotFound, Text: "Not Found"}); err != nil {
 		panic(err)
 	}
-
 }
 
 /*
